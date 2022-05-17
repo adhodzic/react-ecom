@@ -5,24 +5,25 @@ exports.authenticate = function(token) {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         return decoded
     } catch (err) {
-        console.log(err)
         return null
     }
 };
 
-exports.createToken = function (userData, storedPassword, expTime){
-    bcrypt.compare(userData.password, storedPassword,(result)=> {
-        if (!result) {
-            throw new Error('Passwords does not match')
-        }
-    });
-    let token = jwt.sign(
+exports.createToken = function (userData, expTime){
+    return jwt.sign(
         {
             user: userData
         },
         process.env.JWT_SECRET,
         { expiresIn: expTime }
     );
-    console.log(token)
-    return token;
+}
+
+exports.compareAndCreateToken = function (userData, storedPassword, expTime){
+    bcrypt.compare(userData.password, storedPassword,(err,res)=> {
+        if (!res) {
+            throw new Error('Passwords does not match')
+        }
+    });
+    return exports.createToken(userData, expTime);
 }

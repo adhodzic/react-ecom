@@ -1,11 +1,8 @@
-const database = require("../../../services/database.js");
 const { UserModel } = require("../../../models/User.js");
-const { RoleModel } = require("../../../models/Role.js");
 const authHelper = require("../../../helpers/authentication.helper")
-const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 
-
+//route: /users
 exports.getUsers = function () {
 
     return (req, res) => {
@@ -21,7 +18,7 @@ exports.deleteUser = function () {
         res.sendStatus(200);
     };
 };
-
+//route: /register
 exports.registerUser = function () {
 
     return (req, res) => {
@@ -42,52 +39,39 @@ exports.registerUser = function () {
         newUser.save(function (err) {
             console.log(err);
             if (err) return res.json({ err: err });
-            const token = jwt.sign(
-                {
-                    user: {
-                        username: username,
-                        role: "User",
-                    },
-                },
-                process.env.JWT_SECRET,
-                { expiresIn: 480 }
-            );
+            let {password, ...userData} = newUser;
+            let newToken = authHelper.createToken(userData, 480);
             res.json({
-                token: token,
+                token: newToken,
                 user: newUser
             });
         });
     };
 };
-
+//route: /login
 exports.loginUser = function () {
     return (req, res) => {
-        if (!req.body.username && !req.body.password) {
-            return res.sendStatus(400);
+        if (!req.body.username || !req.body.password) {
+            return res.status(400).json({Message:"Invalid data for login. Make sure that body is JSON Object and it contains username and password keys"});
         }
         try {
-            const username = req.body.username;
-            const password = req.body.password;
+            const {username, password} = req.body;
 
-            UserModel.findOne({ username: username }, (err, docs) => {
-                if (docs === null) return res.sendStatus(400);
+            UserModel.findOne({ username }, (err, docs) => {
+                if (docs === null) return res.status(401).json({Message:"User not found"});
 
-                if (err) return res.json({ err: err });
+                if (err) return res.status(500).json({ err: err });
 
-                let userData = {
-                    username: docs.username,
-                    role: docs.role
-                }
-                let newToken = authHelper.createToken(userData, docs.password, 480);
+                const newToken = authHelper.compareAndCreateToken({username, password}, docs.password, 480);
 
                 res.json({
-                    user: userData,
+                    username: username,
+                    role: docs.role,
                     token: newToken
                 });
             });
         } catch (error) {
-            console.log(error);
-            res.sendStatus(500);
+            res.status(500).json({error});
         }
     };
 };

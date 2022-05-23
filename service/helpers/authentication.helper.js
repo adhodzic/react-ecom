@@ -20,6 +20,7 @@ exports.createToken = function (userData, expTime){
 }
 
 exports.compareAndCreateToken = function (userData, storedPassword, expTime){
+    console.log(userData, storedPassword)
     if(!userData?.password || !storedPassword) throw new Error('Both passwords must be provided')
     bcrypt.compare(userData.password, storedPassword,(err,res)=> {
         if (!res) {

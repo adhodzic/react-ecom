@@ -82,6 +82,8 @@ exports.loginUser = function () {
 
                 if (err) return res.status(500).json({ err: err });
 
+                console.log(docs)
+
                 const newToken = authHelper.compareAndCreateToken({username, password}, docs.Password, 480);
 
                 res.json({

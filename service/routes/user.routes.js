@@ -11,7 +11,8 @@ router.route("/").get(verifyUser(ROLES.USER, ROLES.ADMIN), (req, res) => {
     });
 });
 router.route("/user")
-    .get(verifyUser(ROLES.ADMIN), userControler.getUsers())
+    .get(verifyUser(ROLES.USER), userControler.getUser())
+    .put(verifyUser(ROLES.USER), userControler.updateUser())
 
 router.route("/register")
     .post(userControler.registerUser());

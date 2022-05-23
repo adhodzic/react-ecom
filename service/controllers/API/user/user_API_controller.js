@@ -3,13 +3,33 @@ const authHelper = require("../../../helpers/authentication.helper")
 const jwt = require("jsonwebtoken");
 
 //route: /users
-exports.getUsers = function () {
+exports.getUser = function () {
 
     return (req, res) => {
-        console.log(req.body);
-        res.sendStatus(200);
+        const {username} = req.body.userData.user;
+        UserModel.findOne({ username }, (err, docs) => {
+            if (docs === null) return res.status(401).json({Message:"User not found"});
+
+            if (err) return res.status(500).json({ err: err });
+
+            res.status(200).json({
+                Username: docs.Username,
+                Role: docs.Role,
+                FullName: docs.FullName
+            });
+        });
     };
 };
+
+exports.updateUser = function () {
+    return async (req, res) => {
+        const data =  req.body.newData;
+        const Username = req.body.userData.user.username;
+        console.log(Username)
+        const result = await UserModel.updateOne({Username},{...data});
+        return res.status(200).json(result)
+    }
+}
 
 exports.deleteUser = function () {
 
@@ -62,12 +82,13 @@ exports.loginUser = function () {
 
                 if (err) return res.status(500).json({ err: err });
 
-                const newToken = authHelper.compareAndCreateToken({username, password}, docs.password, 480);
+                const newToken = authHelper.compareAndCreateToken({username, password}, docs.Password, 480);
 
                 res.json({
-                    username: username,
-                    role: docs.role,
-                    token: newToken
+                    Username: docs.Username,
+                    Role: docs.Role,
+                    FullName: docs.FullName,
+                    Token: newToken
                 });
             });
         } catch (error) {

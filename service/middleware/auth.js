@@ -1,4 +1,4 @@
-const authenticate = require('../helpers/authentication.helper.js')
+const authHelper = require('../helpers/authentication.helper.js')
 const authorize = require('../helpers/authorization_helper.js')
 const jwt = require('jsonwebtoken')
 
@@ -11,13 +11,13 @@ function paraseToken(headers){
 
 module.exports = function verifyUser(...userRoles){
     return (req, res, next)=>{
-        console.log("we are in middleware");
         const token = paraseToken(req.headers)
-        const userData = authenticate(token)
+        const userData = authHelper.authenticate(token)
         if(userData == null){
             console.log("Invalid token")
             return res.sendStatus(401)
         }
+        req.body.userData = userData;
         const isAuthorized = authorize([...userRoles], userData)
         next();
     }

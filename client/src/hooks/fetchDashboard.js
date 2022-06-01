@@ -24,10 +24,15 @@ export default function useDashboard() {
         
     };
 
+    const saveDashboard = async (data) => {
+        console.log(data);
+    }
+
     return {
         dashboadData,
         isError,
         isLoading,
-        getDashboard
+        getDashboard,
+        saveDashboard
     };
 }

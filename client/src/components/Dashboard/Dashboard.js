@@ -3,8 +3,14 @@ import apiService from "../../services/userApi";
 import {Nav} from 'react-bootstrap'
 import useDashboard from '../../hooks/fetchDashboard'
 import User from "../User/User";
+import './Dashboard.css'
 function Dashboard() {
-    const {dashboadData, isError, isLoading, getDashboard} = useDashboard();
+    const {dashboadData, isError, isLoading, getDashboard, saveDashboard} = useDashboard();
+
+    function saveData(data){
+        saveDashboard(data)
+    }
+
     useEffect(() => {
         getDashboard()
     }, []);
@@ -26,9 +32,10 @@ function Dashboard() {
                     </Nav.Link>
                 </Nav.Item>
             </Nav>
+            <br/>
             <h1>Dashboard</h1>
             {isLoading && <p>Loading...</p>}
-            {dashboadData && <User user={dashboadData}/>}
+            {dashboadData && <User className="User-data" saveData={()=>saveData} user={dashboadData}/>}
             {/*<button onClick={() => setIsEditMode(!isEditMode)}>Edit</button>*/}
         </div>
     );

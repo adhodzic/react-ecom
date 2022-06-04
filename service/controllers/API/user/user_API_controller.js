@@ -25,7 +25,7 @@ exports.updateUser = function () {
     return async (req, res) => {
         const data =  req.body.newData;
         const Username = req.body.userData.user.username;
-        console.log(Username)
+        console.log({...data})
         const result = await UserModel.updateOne({Username},{...data});
         return res.status(200).json(result)
     }
@@ -74,27 +74,22 @@ exports.loginUser = function () {
         if (!req.body.username || !req.body.password) {
             return res.status(400).json({Message:"Invalid data for login. Make sure that body is JSON Object and it contains username and password keys"});
         }
-        try {
-            const {username, password} = req.body;
+        const {username, password} = req.body;
 
-            UserModel.findOne({ username }, (err, docs) => {
-                if (docs === null) return res.status(401).json({Message:"User not found"});
+        UserModel.findOne({ username }, async (err, docs) => {
+            if (docs === null) return res.status(401).json({error: "Invalid username or password"});
 
-                if (err) return res.status(500).json({ err: err });
+            if (err) return res.status(500).json({ err: err });
 
-                console.log(docs)
-
-                const newToken = authHelper.compareAndCreateToken({username, password}, docs.Password, 480);
-
-                res.json({
-                    Username: docs.Username,
-                    Role: docs.Role,
-                    FullName: docs.FullName,
-                    Token: newToken
-                });
+          
+            const newToken = await authHelper.compareAndCreateToken({username, password}, docs.Password, 480);
+            if(!newToken) return res.status(401).json({error: "Invalid username or password"})
+            res.json({
+                Username: docs.Username,
+                Role: docs.Role,
+                FullName: docs.FullName,
+                Token: newToken
             });
-        } catch (error) {
-            res.status(500).json({error});
-        }
+        });
     };
 };

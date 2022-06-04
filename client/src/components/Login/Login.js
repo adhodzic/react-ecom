@@ -7,12 +7,17 @@ function Login(props) {
   const [username, setUserame] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmiting, setIsSubmiting] = useState(false);
+  const [isError, setIsError] = useState()
   const handleSubmit = async (event)=>{
     event.preventDefault();
     setIsSubmiting(true);
-    let {Token} = await apiService.loginUser({username, password});
-    console.log(Token)
-    props.setToken(Token);
+    let data = await apiService.loginUser({username, password});
+    if(data.isError){
+        setIsError(data.error)
+        setIsSubmiting(false)
+        return
+    }
+    props.setToken(data.Token);
     setIsSubmiting(false)
   }
     return (
@@ -35,6 +40,7 @@ function Login(props) {
                     Login
                 </Button>
             </Form>
+            {isError && (<p>{isError}</p>)}
         </div>
     );
 }

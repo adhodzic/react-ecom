@@ -12,13 +12,32 @@ const apiService = {
             return res.data
         }
         catch(error){
-            if(error.response.status) localStorage.removeItem('token')
+            if(error.response.status == 401) localStorage.removeItem('token')
+            return {error, isError: true}
+        }
+    },
+    saveUserData: async function (userData){
+        try{
+            api.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+            const transformData = {
+                Username: userData.username,
+                FullName: userData.fullName,
+                Role: userData.role
+            }
+            const res = await api.put('/user',{newData: transformData})
+        }
+        catch(error){
+            if(error.response.status == 401) localStorage.removeItem('token')
             return {error, isError: true}
         }
     },
     loginUser: async function (userdata){
-        const res = await api.post('/login',{...userdata})
-        return res.data
+        try{
+            const res = await api.post('/login',{...userdata})
+            return res.data
+        }catch(error){
+            return {error: error.response.data.error, isError: true}
+        }
     }
 }
 

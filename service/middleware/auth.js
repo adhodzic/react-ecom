@@ -11,6 +11,7 @@ function paraseToken(headers){
 
 module.exports = function verifyUser(...userRoles){
     return (req, res, next)=>{
+        try{
         const token = paraseToken(req.headers)
         const userData = authHelper.authenticate(token)
         if(userData == null){
@@ -20,5 +21,9 @@ module.exports = function verifyUser(...userRoles){
         req.body.userData = userData;
         const isAuthorized = authorize([...userRoles], userData)
         next();
+        }
+        catch(error){
+            res.status(500).json({error})
+        }
     }
 }

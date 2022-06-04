@@ -7,7 +7,6 @@ export default function useDashboard() {
     const [dashboadData, setDashboardData] = useState(null);
 
     const getDashboard = async () => {
-        
         try{
             setIsLoading(true);
             const data = await apiService.getUserData();
@@ -24,8 +23,13 @@ export default function useDashboard() {
         
     };
 
-    const saveDashboard = async (data) => {
-        console.log(data);
+    const saveDashboard = async (userData) => {
+            const data = await apiService.saveUserData(userData);
+            if(data?.isError) return setIsError(data.error);
+            setDashboardData(data)
+            getDashboard()
+            console.log(data)
+            return data;
     }
 
     return {

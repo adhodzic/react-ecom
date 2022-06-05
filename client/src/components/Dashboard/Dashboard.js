@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import apiService from "../../services/userApi";
 import {Nav} from 'react-bootstrap'
 import './Dashboard.css'
-import { Outlet,Link } from "react-router-dom";
+import { Outlet,Link, Navigate, useLocation} from "react-router-dom";
 function Dashboard() {
+    const location = useLocation()
+    const path = location.pathname
     return (
         <div className="Dashboard">
             <Nav justify variant="tabs" defaultActiveKey="/home">
@@ -15,6 +15,7 @@ function Dashboard() {
                 </Nav.Item>
             </Nav>
             <div className="Dashboard-content">
+                {path == '/dashboard' && <Navigate to='/dashboard/account' replace></Navigate>}
                 <Outlet></Outlet>
                 {/*<button onClick={() => setIsEditMode(!isEditMode)}>Edit</button>*/}
             </div>

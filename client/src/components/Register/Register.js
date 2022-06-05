@@ -1,10 +1,9 @@
 import {Form, Button} from 'react-bootstrap'
 import React, { useState } from 'react';
 import apiService from '../../services/userApi'
-import './Login.css'
 import { useLocation, useNavigate } from 'react-router-dom';
 
-function Login(props) {
+function Register(props) {
   const [username, setUserame] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmiting, setIsSubmiting] = useState(false);
@@ -27,7 +26,7 @@ function Login(props) {
     navigate(from, {replace: true})
   }
     return (
-        <div className="Login">
+        <div className="Register">
           <h1>Login</h1>
             <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -51,4 +50,4 @@ function Login(props) {
     );
 }
 
-export default Login;
+export default Register;

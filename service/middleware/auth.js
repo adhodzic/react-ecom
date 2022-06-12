@@ -15,14 +15,16 @@ module.exports = function verifyUser(...userRoles){
         const token = paraseToken(req.headers)
         const userData = authHelper.authenticate(token)
         if(userData == null){
-            console.log("Invalid token")
+            console.log("Invalid token", token)
             return res.sendStatus(401)
         }
         req.body.userData = userData;
-        const isAuthorized = authorize([...userRoles], userData)
+        const isAuthorized = authorize([...userRoles], userData.user.Role)
+        if(!isAuthorized) return res.status(403).json({error: "User is unauthorized"})
         next();
         }
         catch(error){
+            console.log(error)
             res.status(500).json({error})
         }
     }

@@ -1,4 +1,4 @@
-.Login{
+.Register{
     width: 30rem;
     min-width: 30rem;
     margin: 5rem auto;
@@ -10,10 +10,10 @@
     color: #FFFFFF
 }
 
-.Login h1{
+.Register h1{
     color: #FFFFFF;
 }
-.Login a{
+.Register a{
     text-decoration: none;
     color: rgb(255,255,255);
     float: right;

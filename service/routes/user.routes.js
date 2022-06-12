@@ -10,9 +10,11 @@ router.route("/").get(verifyUser(ROLES.USER, ROLES.ADMIN), (req, res) => {
         message: "Welcome to our API",
     });
 });
+router.route("/get-all-users")
+    .get(verifyUser(ROLES.Admin), userControler.getAllUsers())
 router.route("/user")
-    .get(verifyUser(ROLES.USER), userControler.getUser())
-    .put(verifyUser(ROLES.USER), userControler.updateUser())
+    .get(verifyUser(ROLES.User, ROLES.Admin), userControler.getUser())
+    .put(verifyUser(ROLES.User, ROLES.Admin), userControler.updateUser())
 
 router.route("/register")
     .post(userControler.registerUser());

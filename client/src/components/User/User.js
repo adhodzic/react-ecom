@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Form, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import useDashboard from '../../hooks/fetchDashboard'
 import "./User.css";
 
@@ -10,10 +11,17 @@ function User() {
     const [role, setRole] = useState();
     const [fullName, setFullName] = useState();
     const [isInEdit, setIsInEdit] = useState(false);
+    const navigate = useNavigate()
     useEffect(() => {
-        getDashboard()
-        console.log(dashboadData)
-    }, []);
+        const getData = async function(){
+            await getDashboard()
+            console.log(isError)
+            if(isError.isError){
+                isError.error.message == 401? navigate('/login'):navigate('/')
+            }
+        }
+        getData()
+    }, [isError]);
 
     function inEditMode(){
         const {Username, FullName, Role} = dashboadData;

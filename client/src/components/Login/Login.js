@@ -2,7 +2,7 @@ import {Form, Button} from 'react-bootstrap'
 import React, { useState } from 'react';
 import apiService from '../../services/userApi'
 import './Login.css'
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, Link} from 'react-router-dom';
 
 function Login(props) {
   const [username, setUserame] = useState("");
@@ -15,13 +15,14 @@ function Login(props) {
   const handleSubmit = async (event)=>{
     event.preventDefault();
     setIsSubmiting(true);
-    let data = await apiService.loginUser({username, password});
+    let data = await apiService.loginUser({Username: username, Password: password});
     if(data.isError){
         setIsError(data.error)
         setIsSubmiting(false)
         return
     }
     props.setToken(data.Token);
+    localStorage.setItem('User',JSON.stringify(data.User))
     setIsSubmiting(false)
     console.log(from)
     navigate(from, {replace: true})
@@ -45,6 +46,7 @@ function Login(props) {
                 <Button disabled={isSubmiting} variant="primary" type="submit">
                     Login
                 </Button>
+                <Link to='/register'>Create account</Link>
             </Form>
             {isError && (<p>{isError}</p>)}
         </div>

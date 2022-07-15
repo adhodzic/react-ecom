@@ -14,6 +14,9 @@ function Dashboard() {
                 {user?.Role == 'Admin' && <Nav.Item>
                     <Nav.Link as={Link} to="users">Users</Nav.Link>
                 </Nav.Item>}
+                {user?.Role == 'Admin' && <Nav.Item>
+                    <Nav.Link as={Link} to="item-group">Item Group</Nav.Link>
+                </Nav.Item>}
             </Nav>
             <div className="Dashboard-content">
                 {path == '/dashboard' && <Navigate to='/dashboard/account' replace></Navigate>}

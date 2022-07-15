@@ -23,7 +23,7 @@ function UserList() {
                     </tr>
                 </thead>
                 <tbody>
-                    {users.map((user, i) => {
+                    {users && users.map((user, i) => {
                         return (
                             <tr>
                                 <td>{i+1}</td>

@@ -7,7 +7,7 @@ const ItemFieldSchema = new Schema({
   Name: {type: String, required: true, index: { unique: true}},
   Description: {type: String, required: true},
   DataType: {type: String, required: true},
-  ItemGroup: {type: mongoose.Schema.Types.ObjectId, ref: 'ItemGroup'}
+  ItemGroup: {type: mongoose.Schema.Types.ObjectId, ref: 'ItemGroup', required: true}
 });
 
 exports.ItemFieldModel = mongoose.model('ItemFieldModel', ItemFieldSchema );

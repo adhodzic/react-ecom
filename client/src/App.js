@@ -8,6 +8,7 @@ import useToken from './hooks/authToken.js'
 import { useEffect } from 'react';
 import User from './components/User/User';
 import UserList from './components/UserList/UserList'
+import ItemLayout from './components/Item/ItemLayout'
 import NavBar from './components/NavBar/NavBar';
 import RequireAuth from './components/RequireAuth';
 import Layout from './components/Layout';
@@ -24,6 +25,7 @@ function App() {
           <Route path='dashboard' element={<Dashboard/>}>
             <Route path='account'  element={<User/>}></Route>
             <Route path='users'  element={<UserList/>}></Route>
+            <Route path='item-group'  element={<ItemLayout/>}></Route>
             <Route index element={<User/>}></Route>
           </Route>
         </Route>

@@ -102,7 +102,7 @@ exports.loginUser = function () {
             if (err) return res.status(500).json({ err: err });
 
           
-            const newToken = await authHelper.compareAndCreateToken({Username, Password, Role: docs.Role}, docs.Password);
+            const newToken = await authHelper.compareAndCreateToken({Username, Password, Role: docs.Role, UserId: docs._id}, docs.Password);
             if(!newToken) return res.status(401).json({error: "Invalid username or password"})
             res.json({
                 User: {

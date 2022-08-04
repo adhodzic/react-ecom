@@ -24,7 +24,7 @@ const apiService = {
     create: async function(itemData){
         try{
             api.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
-            const data = await api.post('/item-field',itemData)
+            const data = await api.post('/item',itemData)
             console.log(data)
         }catch(error){
             if(error.response.status == 401) localStorage.removeItem('token')

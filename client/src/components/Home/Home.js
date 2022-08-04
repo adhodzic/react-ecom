@@ -1,8 +1,10 @@
+import ItemList from "../Item/ItemList"
 
 function Home(){
     return(
         <div className="Home">
-            <h1>This is home page</h1>
+            <h1>Items</h1>
+            <ItemList></ItemList>
         </div>
     )
 }

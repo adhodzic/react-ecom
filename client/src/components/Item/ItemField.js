@@ -11,19 +11,20 @@ function ItemField({row, setRow}) {
     const [isInEdit, setIsInEdit] = useState(false);
 
     const fieldConf = [
-        'Name',
-        'Description',
-        'DataType'
+        'Name.Text',
+        'Description.Text',
+        'DataType.Text'
     ]
 
     const handleClose = () => setShow(false);
     const handleShow = (isInEdit, row = null) => {
         setIsInEdit(isInEdit);
         const data = fieldConf.map((e)=>{
+            console.log(row)
             return {
-                Name: e,
-                Value: row ? row[e]: '',
-                ControlType: 'text'
+                Name: e.split('.')[0],
+                Value: row ? row[e.split('.')[0]]: '',
+                ControlType: e.split('.')[1]
             }
         })
         setFieldProp(data)
@@ -43,7 +44,7 @@ function ItemField({row, setRow}) {
         <div className="ItemGroup">
             
             {row.rowData && (<i className="fa-solid fa-circle-plus" onClick={()=>handleShow(false)}></i>)}
-            <ItemModal handleClose={handleClose} isInEdit={isInEdit} show={show} fieldProp={fieldProp} apiService={apiService} id={fieldId}></ItemModal>
+            <ItemModal handleClose={handleClose} isInEdit={isInEdit} show={show} fieldProp={fieldProp} apiService={apiService} id={fieldId} title="Item Field"></ItemModal>
             {itemFields && row.rowData && (
                 <Table striped bordered hover variant="dark">
                     <thead>

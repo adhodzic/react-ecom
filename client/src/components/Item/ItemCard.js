@@ -1,8 +1,9 @@
-
-function ItemCard(){
+function ItemCard({data}){
     return(
         <div className="ItemCard">
-            <h1>This is ItemCard component</h1>
+            <h4>{data.Name}</h4>
+            <p>{data.Status}</p>
+            <p>{data.ItemGroup?.Name}</p>
         </div>
     )
 }

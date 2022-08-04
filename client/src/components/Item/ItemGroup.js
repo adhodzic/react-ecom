@@ -10,8 +10,8 @@ function ItemGroup(props) {
     const [isInEdit, setIsInEdit] = useState(false);
 
     const fieldConf = [
-        'Name',
-        'Description'
+        'Name.Text',
+        'Description.Text'
     ]
 
     const handleClose = () =>{
@@ -21,9 +21,9 @@ function ItemGroup(props) {
         setIsInEdit(isInEdit);
         const data = fieldConf.map((e)=>{
             return {
-                Name: e,
-                Value: row ? row[e]: '',
-                ControlType: 'text'
+                Name: e.split('.')[0],
+                Value: row ? row[e.split('.')[0]]: '',
+                ControlType: e.split('.')[1]
             }
         })
         setFieldProp(data)
@@ -45,7 +45,7 @@ function ItemGroup(props) {
         <div className="ItemGroup">
             
             <i className="fa-solid fa-circle-plus" onClick={()=>handleShow(false)}></i>
-            <ItemModal handleClose={handleClose} isInEdit={isInEdit} show={show} fieldProp={fieldProp} apiService={apiService} id={groupId}></ItemModal>
+            <ItemModal handleClose={handleClose} isInEdit={isInEdit} show={show} fieldProp={fieldProp} apiService={apiService} id={groupId} title="Item Group"></ItemModal>
             {itemGroups && (
                 <Table striped bordered hover variant="dark">
                     <thead>

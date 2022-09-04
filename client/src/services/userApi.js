@@ -56,6 +56,7 @@ const userApiService = {
     },
     loginUser: async function (userdata){
         try{
+            console.log(process.env.API_URL)
             const res = await api.post('/login',{...userdata})
             return res.data
         }catch(error){

@@ -56,7 +56,8 @@ const userApiService = {
     },
     loginUser: async function (userdata){
         try{
-            console.log(process.env.API_URL)
+            const nesto = process.env.API_URL
+            console.log(nesto)
             const res = await api.post('/login',{...userdata})
             return res.data
         }catch(error){

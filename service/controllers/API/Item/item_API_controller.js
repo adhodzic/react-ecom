@@ -1,14 +1,16 @@
 const mongoose = require('mongoose')
 const {ItemModel} = require('../../../models/Item')
 const {ItemGroupModel} = require('../../../models/ItemGroup')
-exports.getAllItems = function (){
+exports.getItems = function (){
     return (req, res) =>{
-       ItemModel.find({}, (error, docs)=>{
-        console.log(docs)
-        if(error) return res.status(500).json({error})
-        if(!docs) return res.status(400).json({message: `No Item found`})
-        return res.status(200).json({docs})
-       }).populate('ItemGroup', 'Name Description', ItemGroupModel)
+        const {id} = req.query;
+        const query = id ? {_id: id}:{}
+        console.log(req.query)
+        ItemModel.find(query, (error, docs)=>{
+            if(error) return res.status(500).json({error})
+            if(!docs) return res.status(400).json({message: `No Item found`})
+            return res.status(200).json({docs})
+        }).populate('ItemGroup', 'Name Description', ItemGroupModel)
     }
 }
 

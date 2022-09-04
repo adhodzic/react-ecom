@@ -1,50 +1,55 @@
 import { useEffect, useState } from "react";
 import {Table} from "react-bootstrap";
-import apiService from "../../services/itemFieldApi";
+import itemFieldApi from "../../services/itemFieldApi";
 import ItemModal from "./ItemModal";
+
 function ItemField({row, setRow}) {
-    const [show, setShow] = useState(false);
-    const [itemFields, setItemFields] = useState([]);
-    const [isSubmiting, setIsSubmiting] = useState(false);
-    const [fieldId, setFieldId] = useState();
-    const [fieldProp, setFieldProp] = useState();
-    const [isInEdit, setIsInEdit] = useState(false);
+    // const [show, setShow] = useState(false);
+    // const [itemFields, setItemFields] = useState([]);
+    // const [fieldId, setFieldId] = useState();
+    // const [fieldProp, setFieldProp] = useState();
+    // const [isInEdit, setIsInEdit] = useState(false);
 
-    const fieldConf = [
-        'Name.Text',
-        'Description.Text',
-        'DataType.Text'
-    ]
+    // const fieldConf = [
+    //     'Name.Text',
+    //     'Description.Text',
+    //     'DataType.Select.Name'
+    // ]
 
-    const handleClose = () => setShow(false);
-    const handleShow = (isInEdit, row = null) => {
-        setIsInEdit(isInEdit);
-        const data = fieldConf.map((e)=>{
-            console.log(row)
-            return {
-                Name: e.split('.')[0],
-                Value: row ? row[e.split('.')[0]]: '',
-                ControlType: e.split('.')[1]
-            }
-        })
-        setFieldProp(data)
-        setFieldId(row?._id)
-        
-        setShow(true);
-    }
-    useEffect(() => {
-        const getData = async function () {
-            const data = await apiService.get({ItemGroupId: row.rowData._id});
-            setItemFields(data.data.docs);
-        };
-        if(row.rowData) getData();
-    }, []);
+    // const DataType = [
+    //     {Name: "Text"},
+    //     {Name: "Select"}
+    // ]
+
+    // const handleClose = () => setShow(false);
+    // const handleShow = (isInEdit, row = null) => {
+    //     setIsInEdit(isInEdit);
+    //     const data = fieldConf.map((e)=>{
+    //         return {
+    //             Name: e.split('.')[0],
+    //             Value: row ? row[e.split('.')[0]]: '',
+    //             ControlType: e.split('.')[1]
+    //         }
+    //     })
+    //     setFieldProp(data)
+    //     setFieldId(row?.rowData._id)
+    //     setShow(true);
+    // }
+    // useEffect(() => {
+    //     const getData = async function () {
+    //         const data = await itemFieldApi.get(row.rowData._id);
+    //         setItemFields(data.data);
+    //     };
+    //     if(row.rowData) getData();
+    // }, []);
     return (
         
         <div className="ItemGroup">
+
+
             
-            {row.rowData && (<i className="fa-solid fa-circle-plus" onClick={()=>handleShow(false)}></i>)}
-            <ItemModal handleClose={handleClose} isInEdit={isInEdit} show={show} fieldProp={fieldProp} apiService={apiService} id={fieldId} title="Item Field"></ItemModal>
+            {/* {row.rowData && (<i className="fa-solid fa-circle-plus" onClick={()=>handleShow(false,{...row, DataType})}></i>)}
+            <ItemModal handleClose={handleClose} isInEdit={isInEdit} show={show} fieldProp={fieldProp} apiService={itemFieldApi} parentId={fieldId} title="Item Field"></ItemModal>
             {itemFields && row.rowData && (
                 <Table striped bordered hover variant="dark">
                     <thead>
@@ -82,7 +87,7 @@ function ItemField({row, setRow}) {
                         )}
                     </tbody>
                 </Table>
-            )}
+            )} */}
         </div>
     );
 }

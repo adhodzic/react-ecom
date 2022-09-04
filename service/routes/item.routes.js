@@ -7,7 +7,7 @@ const itemFieldController = require("../controllers/API/Item/item_field_API_cont
 const itemController = require("../controllers/API/Item/item_API_controller.js")
 
 router.route("/item")
-    .get(verifyUser(ROLES.User, ROLES.Admin), itemController.getAllItems())
+    .get(verifyUser(ROLES.User, ROLES.Admin), itemController.getItems())
     .post(verifyUser(ROLES.Admin), itemController.createItem())
     .put(verifyUser(ROLES.Admin), itemController.updateItem())
 
@@ -17,7 +17,7 @@ router.route("/item-group")
     .put(verifyUser(ROLES.Admin), itemGroupController.updateItemGroup())
 
 router.route("/item-field")
-    .get(verifyUser(ROLES.User, ROLES.Admin), itemFieldController.getAllItemFields())
+    .get(verifyUser(ROLES.User, ROLES.Admin), itemFieldController.getItemFields())
     .post(verifyUser(ROLES.Admin), itemFieldController.createItemField())
     .put(verifyUser(ROLES.Admin), itemFieldController.updateItemField())
     

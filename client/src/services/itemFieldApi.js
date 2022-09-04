@@ -9,26 +9,26 @@ if (error.response.status === 401) {
     window.location = '/login';
 }
 })
-const apiService = {
-    get: async function({ItemGroupId}){
+const itemFieldApiService = {
+    get: async function(ItemGroupId){
         try{
-            console.log(ItemGroupId)
             api.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
-            const data = await api.get('/item-field', {params: {id: ItemGroupId}})
-            return data
+            const data = await api.get('/item-field', {params: {ItemGroupId}})
+            return data.data
         }
         catch(error){
-            if(error.response.status == 401) localStorage.removeItem('token')
+            if(error.response.status === 401) localStorage.removeItem('token')
             return {error, isError: true}
         }
     },
-    create: async function(itemData){
+    create: async function(itemData, parentId){
         try{
+            const preparedData = {...itemData, ItemGroupId: parentId}
             api.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
-            const data = await api.post('/item-field',itemData)
+            const data = await api.post('/item-field',preparedData)
             console.log(data)
         }catch(error){
-            if(error.response.status == 401) localStorage.removeItem('token')
+            if(error.response.status === 401) localStorage.removeItem('token')
             return {error, isError: true}
         }
     },
@@ -38,10 +38,10 @@ const apiService = {
             const data = await api.put('/item-field',itemData)
             console.log(data)
         }catch(error){
-            if(error.response.status == 401) localStorage.removeItem('token')
+            if(error.response.status === 401) localStorage.removeItem('token')
             return {error, isError: true}
         }
     }
 }
 
-export default apiService;
+export default itemFieldApiService;

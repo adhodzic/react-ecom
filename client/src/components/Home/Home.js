@@ -1,10 +1,9 @@
 import ItemList from "../Item/ItemList"
-
-function Home(){
+import './Home.css'
+function Home({cartItems, setCartItems}){
     return(
         <div className="Home">
-            <h1>Items</h1>
-            <ItemList></ItemList>
+            <ItemList setCartItems={setCartItems}></ItemList>
         </div>
     )
 }

@@ -27,6 +27,16 @@
   color: #61dafb;
 }
 
+.cart-icon{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.cart-icon p{
+  margin: 0 0 0 10px;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

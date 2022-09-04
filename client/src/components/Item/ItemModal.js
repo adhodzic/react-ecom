@@ -1,65 +1,80 @@
 import { useEffect, useState } from "react";
-import { Form, Button, Table, Modal } from "react-bootstrap";
-function ItemModal({handleClose, show, isInEdit, fieldProp, apiService, parentId, title}) {
+import { Form, Button, Modal } from "react-bootstrap";
+function ItemModal({handleClose, show, isInEdit, modalProp, apiService, rowData, parentId, title}) {
     //props needed for modal are:
     //  isInEdit(true/false)
     //  fieldProp(Array of Objects containing Field name, ControlType and Data if exits)
     const [fieldData, setFieldData] = useState()
     const [isSubmiting, setIsSubmiting] = useState(false);
-    useEffect(()=>{
-        if(fieldProp) setFieldData([...fieldProp])
-    },[fieldProp,show])
+    const [isLoading, setIsLoading] = useState(false)
+    async function getOptionsFromDataSource(dataSource){
+        let options = await dataSource.get();
+        if(options.length <= 0) return []
+        return options.map((option)=>{
+            return option.Name
+        })
+    }
 
-    const updateFieldOnChange = function(newValue, fieldName){
-        const newFieldValue = fieldData.find((field, i) => {
-            if (field.Name === fieldName) {
-                // if(field.ControlType == 'Select'){
-                //     let selectedOption = o.Value.find((option, i)=>{
-                //         if(option.Name === newValue) return true
-                //     })
-                //     fieldData[i] = { Name: o.Name, Value: selectedOption, ControlType: o.ControlType };
-                // }else{
-                //fieldData[i] = { Name: field.Name, Value: newValue, ControlType: field.ControlType };
-                //}
-                
-                return true; // stop searching
-            }
-        });
-        let updatedField = { Name: newFieldValue.Name, Value: newValue, ControlType: newFieldValue.ControlType };
-        //console.log(field)
-        const index = fieldData.indexOf(newFieldValue)
+    async function tranformData(data){
+        if(modalProp){
+            return await Promise.all(Object.entries(modalProp).map(async (e) => {
+                let options = e[1].DataSource && await getOptionsFromDataSource(e[1].DataSource)
+                return {
+                    Name: e[0],
+                    Value: isInEdit?data[e[0]]:'',
+                    ControlType: e[1].ControlType,
+                    Options: e[1].Options ? e[1].Options : options
+                }
+            }));
+        }
+        return []
+    }
+
+    useEffect(()=>{
+        async function getFields(){
+            setIsLoading(true)
+            let tranformedData = await tranformData(rowData);
+            setFieldData([...tranformedData])
+            setIsLoading(false)
+        }
+        getFields();
+        
+        
+    },[modalProp,show])
+
+    const updateFieldOnChange = function(newValue, field){
+        const index = fieldData.indexOf(field)
         const newData = [...fieldData]
-        newData[index] = updatedField
+        field.Value = newValue
+        newData[index] = field
         setFieldData(newData)     
     }
 
-    const getOptionsForSelect = function(options){
+    const getOptionsForSelect =  function(prop){
+        if(!prop) return
         let defaultOption = (<option>-</option>)
-        return (defaultOption,[...options.map(value =>{
-            return <option>{value.Name}</option>
-        })])
+        return ([defaultOption,[...prop.map(value =>{
+            return (<option key={value}>{value}</option>)
+        })]])
     }
 
     const submitData = async function (event) {
         event.preventDefault();
-        console.log(fieldData)
         setIsSubmiting(true);
         let data = fieldData.reduce(
             (obj, item) => Object.assign(obj, { [item.Name]: item.Value }), {})
-        console.log(data)
-        isInEdit ? await apiService.update({...data, parentId}) : await apiService.create(data)
+        isInEdit ? await apiService.update(data, rowData._id) : await apiService.create(data, parentId)
         setIsSubmiting(false);
+        handleClose();
     };
 
     const findProp = function(propName){
-        
-        const newFieldValue = fieldProp.find((field, i) => {
-            if (field.Name === propName) {               
+        const fieldProp = Object.entries(modalProp).find((field, i) => {
+            if (field[0] === propName) {               
                 return true; // stop searching
             }
         });
-       // console.log(newFieldValue,propName)
-        return newFieldValue
+        return fieldProp
     }
     return (
         <>
@@ -69,20 +84,21 @@ function ItemModal({handleClose, show, isInEdit, fieldProp, apiService, parentId
                 </Modal.Header>
                 <Modal.Body>
                     <Form id="group-form" onSubmit={submitData}>
-                        {fieldData && fieldData.map((field)=>{
+                        {(fieldData && !isLoading) && fieldData.map((field)=>{
                             return (
-                                <Form.Group className="mb-3" controlId="itemGroupName">
-                                    <Form.Label>{field.Name}</Form.Label>
+                                <Form.Group key={field._id} className="mb-3" controlId="itemGroupName">
+                                    <Form.Label style={{color: '#333'}}><b>{field.Name}</b></Form.Label>
                                     {field.ControlType == 'Text' && (<Form.Control
+                                        key={field?._id}
                                         name={field.Name}
                                         type={field.ControlType}
-                                        value={field.Value}
+                                        value={field?.Value}
                                         placeholder={"Enter " + field.Name}
-                                        onChange={(e) => updateFieldOnChange(e.target.value, field.Name)}
+                                        onChange={(e) => updateFieldOnChange(e.target.value, field)}
                                     />)}
                                     {field.ControlType == 'Select' &&
-                                    (<Form.Select  onChange={(e) => updateFieldOnChange(e.target.value, field.Name)}>
-                                        {getOptionsForSelect(findProp(field.Name).Value)}
+                                    (<Form.Select value={field?.Value} key={field._id} onChange={(e) => updateFieldOnChange(e.target.value, field)}>
+                                        {getOptionsForSelect(field.Options)}
                                     </Form.Select>)}
                                 </Form.Group>
                             )
@@ -90,7 +106,7 @@ function ItemModal({handleClose, show, isInEdit, fieldProp, apiService, parentId
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
+                    <Button disabled={isSubmiting} variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
                     <Button

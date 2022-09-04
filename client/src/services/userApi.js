@@ -3,8 +3,8 @@ const api = axios.create({
     baseURL: 'http://localhost:5000/api',
     'Content-Type': 'application/json'
   })
-const apiService = {
-    getUsers: async function (){
+const userApiService = {
+    get: async function (){
         try{
             api.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
             const res = await api.get('/get-all-users')
@@ -75,4 +75,4 @@ const apiService = {
     }
 }
 
-export default  apiService
+export default  userApiService

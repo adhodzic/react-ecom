@@ -1,0 +1,8 @@
+.ItemDetails{
+    margin: 2rem;
+    max-width: 30rem;
+}
+
+.ItemDetails > .form.label{
+    color: #333;
+}

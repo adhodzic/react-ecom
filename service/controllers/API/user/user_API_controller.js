@@ -14,6 +14,7 @@ exports.getUser = function () {
             if (err) return res.status(500).json({ err: err });
 
             res.status(200).json({
+                _id: docs._id,
                 Username: docs.Username,
                 Role: docs.Role,
                 FullName: docs.FullName
@@ -27,10 +28,10 @@ exports.getAllUsers = function () {
     return (req, res) => {
         UserModel.find({}, (err, docs) => {
             if (docs === null) return res.status(401).json({Message:"No users found"});
-            console.log(docs)
             if (err) return res.status(500).json({ err: err });
             docs = docs.map(user=>{
                 return {
+                    _id: user._id,
                     Username: user.Username,
                     Role: user.Role,
                     FullName: user.FullName
@@ -106,7 +107,7 @@ exports.loginUser = function () {
             if(!newToken) return res.status(401).json({error: "Invalid username or password"})
             res.json({
                 User: {
-                    UserId: docs._id,
+                    _id: docs._id,
                     Username: docs.Username,
                     Role: docs.Role,
                     FullName: docs.FullName

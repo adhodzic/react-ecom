@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import ItemModal from "../../Item/ItemModal"
 import './Table.css'
-import { Form } from 'react-bootstrap'
+import { Form, Modal, Button } from 'react-bootstrap'
 function CoreTable({apiService, selectedRow, setSelectedRow, parentRow, modalProp, title}) {
 
     const [data, setData] = useState()
@@ -13,6 +13,8 @@ function CoreTable({apiService, selectedRow, setSelectedRow, parentRow, modalPro
     const [isInEdit, setIsInEdit] = useState(false);
 
     const [editRow, setEditRow] = useState()
+
+    const [showDeleteNotification, setShowDeleteNotification] = useState(false)
 
     const handleClose = () => setShow(false);
     const handleShow = (edit, row = null) => {
@@ -28,7 +30,20 @@ function CoreTable({apiService, selectedRow, setSelectedRow, parentRow, modalPro
         }
         loadData()
 
-    },[parentRow, show])
+    },[parentRow, show, showDeleteNotification])
+
+    const deleteCheckedRows = async () => {
+        const ids = checkedRows.map((row)=>{
+            return row._id
+        })
+        console.log(ids)
+        await apiService.delete(ids)
+        setShowDeleteNotification(false)
+    }
+
+    const handleDeleteNoticiationClose = () => {
+        setShowDeleteNotification(false)
+    }
 
     const addToCheckedList = (e, row) => {
         //Check if row is already in checked array
@@ -96,10 +111,27 @@ function CoreTable({apiService, selectedRow, setSelectedRow, parentRow, modalPro
     <div className="Table">
         <div className="table-action-bar">
             <i className="fa-solid fa-circle-plus" onClick={()=>handleShow(false)}></i>
-            <i className="fa-solid fa-circle-minus"></i>
+            <i className="fa-solid fa-circle-minus" onClick={()=>checkedRows.length > 0 && setShowDeleteNotification(true)}></i>
         </div>
         <ItemModal handleClose={handleClose} modalProp={modalProp} isInEdit={isInEdit} show={show} apiService={apiService} rowData={editRow} parentId={parentRow?._id} title={title}></ItemModal>
-        
+        <Modal show={showDeleteNotification} onHide={handleDeleteNoticiationClose} >
+            <Modal.Header closeButton>
+                <Modal.Title id="example-modal-sizes-title-sm">
+                    Delete {title}
+                </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <p>Are you sure you want to delete <b>{checkedRows.length}</b> {title}/s</p>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={handleDeleteNoticiationClose}>
+                    Close
+                </Button>
+                <Button variant="danger" onClick={deleteCheckedRows}>
+                    Delete
+                </Button>
+            </Modal.Footer>
+        </Modal>
         {(data && data.length > 0) &&
         <>
         <table>

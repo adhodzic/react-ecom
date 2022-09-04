@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+
 import apiService from "../../services/userApi";
-import itemFieldApiService from "../../services/itemFieldApi";
 import CoreTable from "../Core/Table/TableLayout";
 function UserList() {
 

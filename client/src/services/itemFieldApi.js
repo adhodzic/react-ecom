@@ -32,7 +32,16 @@ const itemFieldApiService = {
             if(error.response.status === 401) localStorage.removeItem('token')
             return {error, isError: true}
         }
-    }
+    },
+    delete: async function(data){
+        try{
+            api.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+            await api.delete('/item-field',{data: {data}})
+        }catch(error){
+            if(error.response.status === 401) localStorage.removeItem('token')
+            return {error, isError: true}
+        }
+    },
 }
 
 export default itemFieldApiService;

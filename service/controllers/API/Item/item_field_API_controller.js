@@ -35,12 +35,24 @@ exports.createItemField = function (){
 
 exports.updateItemField = function (){
     return async (req, res) =>{
-        const {Name, Description, DataType, ItemGroupId, _id} = req.body; 
-        let docs = await ItemFieldModel.findOneAndUpdate({_id: _id}, {Name, Description, DataType, ItemGroupId}, {
+        const data = req.body.data; 
+        let docs = await ItemFieldModel.findOneAndUpdate({_id: data._id}, data, {
             new: true
         });
-        //if(error) return res.status(500).json({error})
-        if(!docs) return res.status(400).json({message: `No Item Fields find for user: ${ItemGroupId}`})
+        
+        if(!docs) return res.status(400).json({message: `No Item Fields find for ${data._id}`})
         return res.status(200).json({docs})
+    }
+}
+
+exports.deleteItemField = function (){
+    return async (req, res) =>{
+        const _ids = req.body.data; 
+        console.log(_ids)
+        let docs = await ItemFieldModel.deleteMany({_id: {$in: _ids}});
+        console.log(docs)
+        //if(error) return res.status(500).json({error})
+        if(!docs) return res.status(400).json({message: `No Item Fields find`})
+        return res.status(200).json(docs)
     }
 }

@@ -12,27 +12,33 @@ const itemGroupApiService = {
             return {error, isError: true}
         }
     },
-    create: async function(itemData){
+    create: async function(data){
         try{
             api.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
-            const data = await api.post('/item-group',itemData)
-            console.log(data)
+            await api.post('/item-group',{data})
         }catch(error){
             if(error.response.status === 401) localStorage.removeItem('token')
             return {error, isError: true}
         }
     },
-    update: async function(itemData, id){
+    update: async function(data){
         try{
-            const preparedData = {...itemData, id: id}
             api.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
-            const data = await api.put('/item-group',preparedData)
-            console.log(data)
+            await api.put('/item-group',{data})
         }catch(error){
             if(error.response.status === 401) localStorage.removeItem('token')
             return {error, isError: true}
         }
-    }
+    },
+    delete: async function(data){
+        try{
+            api.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+            await api.delete('/item-group',{data: {data}})
+        }catch(error){
+            if(error.response.status === 401) localStorage.removeItem('token')
+            return {error, isError: true}
+        }
+    },
 }
 
 export default itemGroupApiService;

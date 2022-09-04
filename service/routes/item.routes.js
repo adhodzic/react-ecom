@@ -10,15 +10,18 @@ router.route("/item")
     .get(verifyUser(ROLES.User, ROLES.Admin), itemController.getItems())
     .post(verifyUser(ROLES.Admin), itemController.createItem())
     .put(verifyUser(ROLES.Admin), itemController.updateItem())
+    .delete(verifyUser(ROLES.Admin), itemController.deleteItem())
 
 router.route("/item-group")
     .get(verifyUser(ROLES.User, ROLES.Admin), itemGroupController.getAllItemGroups())
     .post(verifyUser(ROLES.Admin), itemGroupController.createItemGroup())
     .put(verifyUser(ROLES.Admin), itemGroupController.updateItemGroup())
+    .delete(verifyUser(ROLES.Admin), itemGroupController.deleteItemGroup())
 
 router.route("/item-field")
     .get(verifyUser(ROLES.User, ROLES.Admin), itemFieldController.getItemFields())
     .post(verifyUser(ROLES.Admin), itemFieldController.createItemField())
     .put(verifyUser(ROLES.Admin), itemFieldController.updateItemField())
+    .delete(verifyUser(ROLES.Admin), itemFieldController.deleteItemField())
     
 module.exports = router;

@@ -15,6 +15,7 @@ router.route("/get-all-users")
 router.route("/user")
     .get(verifyUser(ROLES.User, ROLES.Admin), userControler.getUser())
     .put(verifyUser(ROLES.User, ROLES.Admin), userControler.updateUser())
+    .delete(verifyUser(ROLES.Admin), userControler.deleteUser())
 
 router.route("/register")
     .post(userControler.registerUser());

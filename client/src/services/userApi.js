@@ -13,21 +13,28 @@ const userApiService = {
         }
     },
 
-        saveUserData: async function (userData){
+    update: async function (data){
         try{
             api.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
-            const transformData = {
-                Username: userData.username,
-                FullName: userData.fullName,
-                Role: userData.role
-            }
-            const res = await api.put('/user',{newData: transformData})
+
+            const res = await api.put('/user',{data})
         }
         catch(error){
             if(error.response.status == 401) localStorage.removeItem('token')
             return {error, isError: true}
         }
     },
+
+    delete: async function(data){
+        try{
+            api.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+            await api.delete('/user',{data: {data}})
+        }catch(error){
+            if(error.response.status === 401) localStorage.removeItem('token')
+            return {error, isError: true}
+        }
+    },
+
     getUserData: async function (userdata){
         try{
             api.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');

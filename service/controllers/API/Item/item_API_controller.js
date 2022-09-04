@@ -48,3 +48,15 @@ exports.updateItem = function (){
         return res.status(200).json({docs})
     }
 }
+
+exports.deleteItem = function (){
+    return async (req, res) =>{
+        const _ids = req.body.data; 
+        console.log(_ids)
+        let docs = await ItemModel.deleteMany({_id: {$in: _ids}});
+        console.log(docs)
+        //if(error) return res.status(500).json({error})
+        if(!docs) return res.status(400).json({message: `No Items found`})
+        return res.status(200).json(docs)
+    }
+}

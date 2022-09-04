@@ -63,7 +63,7 @@ function ItemModal({handleClose, show, isInEdit, modalProp, apiService, rowData,
         setIsSubmiting(true);
         let data = fieldData.reduce(
             (obj, item) => Object.assign(obj, { [item.Name]: item.Value }), {})
-        isInEdit ? await apiService.update(data, rowData._id) : await apiService.create(data, parentId)
+        isInEdit ? await apiService.update({...data, _id: rowData._id}) : await apiService.create(data, parentId)
         setIsSubmiting(false);
         handleClose();
     };

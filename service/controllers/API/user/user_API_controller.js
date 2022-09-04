@@ -44,21 +44,24 @@ exports.getAllUsers = function () {
 
 exports.updateUser = function () {
     return async (req, res) => {
-        const data =  req.body.newData;
-        const Username = req.body.userData.user.Username;
-        console.log({...data}, Username)
-        const result = await UserModel.updateOne({Username},{...data});
+        const {_id, ...data} =  req.body.data;
+        
+        const result = await UserModel.findOneAndUpdate({_id: _id}, data);
         return res.status(200).json(result)
     }
 }
 
-exports.deleteUser = function () {
-
-    return (req, res) => {
-        console.log(req.body);
-        res.sendStatus(200);
-    };
-};
+exports.deleteUser = function (){
+    return async (req, res) =>{
+        const _ids = req.body.data; 
+        console.log(_ids)
+        let docs = await UserModel.deleteMany({_id: {$in: _ids}});
+        console.log(docs)
+        //if(error) return res.status(500).json({error})
+        if(!docs) return res.status(400).json({message: `No Users found`})
+        return res.status(200).json(docs)
+    }
+}
 //route: /register
 exports.registerUser = function () {
 

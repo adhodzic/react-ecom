@@ -12,8 +12,8 @@ const userRouter = require('./routes/user.routes.js')
 const commonRouter = require('./routes/common.routes.js')
 const itemRouter = require('./routes/item.routes.js')
 
-var key = fs.readFileSync(__dirname + '../../https/selfsigned.key');
-var cert = fs.readFileSync(__dirname + '../../https/selfsigned.crt');
+var key = fs.readFileSync(__dirname + '/certs/selfsigned.key', 'utf8');
+var cert = fs.readFileSync(__dirname + '/certs/selfsigned.crt', 'utf8');
 var options = {
   key: key,
   cert: cert

@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 
 function paraseToken(headers){
     const headerToken = headers.authorization;
+    if(!headerToken) return null;
     const bearerToken = headerToken.split(' ');
     const JWToken = bearerToken[1];
     return JWToken;

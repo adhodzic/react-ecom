@@ -10,4 +10,6 @@ const ItemDataSchema = new Schema({
   Item: {type: mongoose.Schema.Types.ObjectId, ref: 'Item', required: true}
 });
 
+ItemDataSchema.index({ Item: 1, ItemField: 1 }, { unique: true });
+
 exports.ItemDataModel = mongoose.model('ItemDataModel', ItemDataSchema );

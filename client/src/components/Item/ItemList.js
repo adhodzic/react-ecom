@@ -38,8 +38,8 @@ function ItemList(){
 
     return(
         <div className="ItemList">
-            <h1>Items</h1>
-            <div>
+            <div className="item-actionbar">
+                <h1>Items</h1>
                 <i className="fa-solid fa-circle-plus" onClick={()=>handleShow(false)}></i>
                 <ItemModal handleClose={handleClose} isInEdit={isInEdit} show={show} apiService={apiService} modalProp={itemProp} title="Item"></ItemModal>
             </div>

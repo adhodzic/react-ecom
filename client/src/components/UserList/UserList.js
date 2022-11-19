@@ -1,6 +1,6 @@
 
 import apiService from "../../services/userApi";
-import CoreTable from "../Core/Table/TableLayout";
+import TableLayout from "../Core/Table/TableLayout";
 function UserList() {
 
     const usersProp = {
@@ -17,7 +17,7 @@ function UserList() {
 
     return (
         <div className="UserList">
-            <CoreTable apiService={apiService} title="User" modalProp={usersProp}></CoreTable>
+            <TableLayout apiService={apiService} title="User" modalProp={usersProp}></TableLayout>
         </div>
     );
 }

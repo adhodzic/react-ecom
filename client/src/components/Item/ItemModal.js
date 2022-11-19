@@ -68,14 +68,6 @@ function ItemModal({handleClose, show, isInEdit, modalProp, apiService, rowData,
         handleClose();
     };
 
-    const findProp = function(propName){
-        const fieldProp = Object.entries(modalProp).find((field, i) => {
-            if (field[0] === propName) {               
-                return true; // stop searching
-            }
-        });
-        return fieldProp
-    }
     return (
         <>
             <Modal show={show} onHide={handleClose}>

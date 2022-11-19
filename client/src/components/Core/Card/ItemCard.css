@@ -7,3 +7,12 @@
 .button{
     cursor: pointer;
 }
+
+.horizontal {
+    flex-direction: row !important;
+    white-space: nowrap;
+}
+
+.CoreCard {
+    width: 20rem;
+}

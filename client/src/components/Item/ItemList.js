@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import ItemModal from "../Item/ItemModal"
 import itemGroupApi from "../../services/itemGroupApi";
 import apiService from "../../services/itemApi";
-import ItemCard from "./ItemCard";
+import CoreCard from "../Core/Card/CoreCard"
 import './ItemList.css';
+import { Col, Row } from "react-bootstrap";
 
 function ItemList(){
     const [show, setShow] = useState(false);
@@ -43,11 +44,17 @@ function ItemList(){
                 <i className="fa-solid fa-circle-plus" onClick={()=>handleShow(false)}></i>
                 <ItemModal handleClose={handleClose} isInEdit={isInEdit} show={show} apiService={apiService} modalProp={itemProp} title="Item"></ItemModal>
             </div>
-            <div className="item-list">
+            <Row className="g-5">             
                 {itemList && (itemList.map((item)=>{
-                    return (<ItemCard key={item._id} data={item}></ItemCard>)
+                    return (
+                        <>
+                        <Col xs={8} sm={7} md={6} lg={4} xl={4} xxl={3}>
+                            <CoreCard key={item._id} itemData={item}></CoreCard>
+                        </Col>
+                        </>
+                        )
                 }))}
-            </div>
+            </Row>
         </div>
     )
 }

@@ -12,3 +12,32 @@
     justify-content: center;
     margin-top: 1rem;
 }
+.Dashboard .nav *{
+    color: rgb(255, 255, 255);
+    background-color: rgb(64, 64, 64);
+}
+
+.Dashboard .nav-link {
+    border: none !important;
+    text-decoration: none !important;
+}
+
+.nav-link:not([class*="isActive"]):hover {
+    color: #ffff !important;
+    text-decoration: none !important;
+}
+
+.nav-link:not([class*="isActive"]) {
+    color: #ffff !important;
+    text-decoration: none !important;
+}
+
+.isActive{
+    border-color: rgb(255, 255, 255) !important;
+    background-color: rgb(237, 237, 237) !important;
+    color: rgb(64, 64, 64) !important; 
+}
+
+.isActive:hover{
+    color: rgb(64, 64, 64) !important; 
+}

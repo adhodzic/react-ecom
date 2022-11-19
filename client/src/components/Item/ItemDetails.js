@@ -5,7 +5,7 @@ import itemFieldApiService from "../../services/itemFieldApi";
 import itemApiService from "../../services/itemApi";
 import itemDataService from "../../services/itemDataApi";
 import "./ItemDetails.css";
-function ItemDetails({ data }) {
+function ItemDetails() {
     const params = useParams();
     const [isSubmiting, setIsSubmiting] = useState();
     const [fieldItemData, setFieldItemData] = useState();

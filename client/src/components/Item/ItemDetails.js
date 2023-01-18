@@ -104,8 +104,8 @@ function ItemDetails() {
     return (
         <div className="ItemDetails">
             <h1>Item details</h1>
-            <Form id="group-form" onSubmit={submitData}>
-                {fieldItemData && changedFields &&
+            {fieldItemData && <Form id="group-form" onSubmit={submitData}>
+                {changedFields &&
                     !error &&
                     fieldItemData.map((field) => {
                         return (
@@ -126,7 +126,7 @@ function ItemDetails() {
                 >
                     Save
                 </Button>
-            </Form>
+            </Form>}
             {error && <p>{error}</p>}
         </div>
     );

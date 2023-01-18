@@ -1,0 +1,61 @@
+.upload__image-wrapper .dropable-zone{
+    border: 1px black dashed;
+    background-color: rgb(235, 235, 235);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100px;
+    width: 300px;
+    cursor: pointer;
+    border-radius: 10px;
+    width: 100%;
+}
+
+.upload__image-wrapper .dropable-zone .fa-trash{
+    position: absolute;
+    transform: translate(210px, -150px);
+    color: rgb(213, 56, 56);
+    font-size: 20px;
+}
+.upload__image-wrapper .dropable-zone .ReactCrop{
+    border-radius: inherit;
+}
+
+.upload__image-wrapper .dropable-zone img{
+    border-radius: inherit;
+    width: 100%;
+    height: 100%;
+}
+
+.upload__image-wrapper .dropable-zone p{
+    position: absolute;
+    transform: translate(200px, 160px);
+    background-color: rgb(217, 217, 217);
+    border-radius: 5px;
+    padding: 5px;
+    color: rgb(66, 66, 66);
+    width: 60px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: bolder;
+}
+
+.cropped-done-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+.cropped-preview{
+    object-fit: contain;
+    width: 300px;
+    height: auto;
+    border-radius: inherit;
+}
+
+.upload-toolbar{
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    align-items: center;
+}

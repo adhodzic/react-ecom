@@ -2,8 +2,9 @@ import {Card, Button} from 'react-bootstrap'
 
 import './ItemCard.css'
 import useCoreCard from './coreCardHook';
-
+import UserHelper from '../../../utils/UserHelper'
 function CoreCard({ itemData, isCartItem = false }) {
+
     const {
         toDetails,
         addToCart,
@@ -19,8 +20,8 @@ function CoreCard({ itemData, isCartItem = false }) {
                     <Card.Title>
                     <div className='title-flex'>
                         <p>{data.Name}</p> 
-                        {!isCartItem && (
-                        <i className="fa-solid fa-pen-to-square button" onClick={()=>toDetails()}></i>
+                        {(!isCartItem && UserHelper.hasRole('Admin')) && (
+                            <i className="fa-solid fa-pen-to-square button" onClick={()=>toDetails()}></i>
                         )}
                     </div>
                     

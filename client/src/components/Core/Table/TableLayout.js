@@ -1,5 +1,5 @@
 import { useState } from "react";
-import CoreTable from "./Table";
+import CoreTable from "./CoreTable";
 
 function CoreTableLayout({apiService, childApiService, title, childTitle, modalProp, childModalProp}) {
     const [selectedRow, setSelectedRow] = useState();
